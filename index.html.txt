@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Para Chulis 🌼</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500&display=swap');
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    overflow: hidden;
+    background: #08130d;
+    color: white;
+    font-family: 'Montserrat', sans-serif;
+}
+
+/* FONDO */
+
+.scene {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 50% 20%, #304c29 0%, #15281a 35%, #08130d 75%);
+}
+
+/* LUNA */
+
+.moon {
+    position: absolute;
+    top: 8%;
+    right: 12%;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background: #fff7bd;
+    box-shadow:
+        0 0 30px rgba(255,244,170,.5),
+        0 0 80px rgba(255,239,130,.15);
+    animation: moonFloat 5s ease-in-out infinite;
+}
+
+@keyframes moonFloat {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ESTRELLAS */
+
+.star {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: #fff6b0;
+    border-radius: 50%;
+    animation: twinkle 2s infinite alternate;
+}
+
+@keyframes twinkle {
+    from { opacity: .2; transform: scale(.6); }
+    to { opacity: 1; transform: scale(1.5); }
+}
+
+/* PANTALLA INICIAL */
+
+.start-screen {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background:
+        radial-gradient(circle at center, #203a22, #07100b 75%);
+    transition: opacity 1.5s ease, visibility 1.5s ease;
+}
+
+.start-screen.hide {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.start-flower {
+    font-size: 75px;
+    animation: flowerFloat 3s ease-in-out infinite;
+    filter: drop-shadow(0 0 15px rgba(255,215,0,.35));
+}
+
+@keyframes flowerFloat {
+    0%,100% {
+        transform: translateY(0) rotate(-4deg);
+    }
+    50% {
+        transform: translateY(-15px) rotate(4deg);
+    }
+}
+
+.start-title {
+    margin-top: 20px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(35px, 7vw, 65px);
+    font-weight: 500;
+}
+
+.start-subtitle {
+    margin-top: 8px;
+    opacity: .65;
+    font-size: 13px;
+    letter-spacing: 3px;
+}
+
+.open-btn {
+    margin-top: 35px;
+    padding: 14px 34px;
+    border: 1px solid rgba(255,220,100,.5);
+    border-radius: 50px;
+    background: rgba(255,210,80,.08);
+    color: #fff3a8;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .3s;
+    backdrop-filter: blur(8px);
+}
+
+.open-btn:hover {
+    background: rgba(255,210,80,.2);
+    transform: scale(1.07);
+    box-shadow: 0 0 30px rgba(255,210,80,.15);
+}
+
+/* CONTENIDO */
+
+.content {
+    position: relative;
+    z-index: 5;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 25px;
+}
+
+.date {
+    font-size: 12px;
+    letter-spacing: 7px;
+    opacity: .65;
+    margin-bottom: 15px;
+    animation: fadeUp 2s ease both;
+}
+
+.title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(45px, 9vw, 95px);
+    font-weight: 500;
+    color: #ffe978;
+    text-shadow: 0 0 30px rgba(255,210,50,.15);
+    animation: fadeUp 2s .3s ease both;
+}
+
+.subtitle {
+    margin-top: 8px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(25px, 5vw, 42px);
+    animation: fadeUp 2s .7s ease both;
+}
+
+.message {
+    max-width: 650px;
+    margin-top: 35px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(22px, 4vw, 31px);
+    line-height: 1.45;
+    opacity: 0;
+    animation: fadeUp 2s 1.3s ease forwards;
+}
+
+.signature {
+    margin-top: 25px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 23px;
+    color: #ffe978;
+    opacity: 0;
+    animation: fadeUp 2s 2s ease forwards;
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(25px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* CAMPO */
+
+.ground {
+    position: absolute;
+    bottom: -10px;
+    left: -5%;
+    width: 110%;
+    height: 23%;
+    background: linear-gradient(to top, #07110a, transparent);
+    z-index: 3;
+}
+
+/* FLORES */
+
+.flower {
+    position: absolute;
+    bottom: 5%;
+    transform-origin: bottom center;
+    animation: sway 4s ease-in-out infinite;
+    z-index: 2;
+}
+
+.flower .stem {
+    width: 4px;
+    height: 100px;
+    background: linear-gradient(to top, #183b20, #3d7b35);
+    border-radius: 5px;
+    margin: auto;
+}
+
+.flower .head {
+    font-size: 38px;
+    transform: translateY(15px);
+    filter: drop-shadow(0 0 8px rgba(255,220,50,.25));
+}
+
+@keyframes sway {
+    0%,100% {
+        transform: rotate(-2deg);
+    }
+    50% {
+        transform: rotate(3deg);
+    }
+}
+
+/* PETALOS */
+
+.petal {
+    position: absolute;
+    top: -30px;
+    font-size: 18px;
+    pointer-events: none;
+    animation: fall linear forwards;
+    z-index: 8;
+}
+
+@keyframes fall {
+    0% {
+        transform: translateY(-30px) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: .9;
+    }
+    100% {
+        transform: translateY(110vh) translateX(var(--wind)) rotate(600deg);
+        opacity: 0;
+    }
+}
+
+/* BOTONES */
+
+.controls {
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 15;
+}
+
+.control-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,225,100,.3);
+    background: rgba(0,0,0,.25);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: .3s;
+}
+
+.control-btn:hover {
+    transform: scale(1.15);
+    background: rgba(255,220,70,.15);
+}
+
+/* GIRASOLES ESPECIALES */
+
+.sunflower {
+    position: absolute;
+    z-index: 12;
+    bottom: -80px;
+    pointer-events: none;
+    font-size: 45px;
+    animation: sunflowerRise 4s cubic-bezier(.2,.8,.2,1) forwards;
+    filter: drop-shadow(0 0 10px rgba(255,210,40,.35));
+}
+
+@keyframes sunflowerRise {
+    0% {
+        transform:
+            translateY(0)
+            translateX(0)
+            rotate(-20deg)
+            scale(.3);
+        opacity: 0;
+    }
+
+    15% {
+        opacity: 1;
+    }
+
+    45% {
+        transform:
+            translateY(-45vh)
+            translateX(var(--move))
+            rotate(15deg)
+            scale(1);
+    }
+
+    75% {
+        transform:
+            translateY(-75vh)
+            translateX(calc(var(--move) * -1))
+            rotate(-15deg)
+            scale(1.15);
+        opacity: 1;
+    }
+
+    100% {
+        transform:
+            translateY(-115vh)
+            translateX(var(--move))
+            rotate(30deg)
+            scale(.7);
+        opacity: 0;
+    }
+}
+
+/* MENSAJE GIRASOLES */
+
+.sun-message {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(.5);
+    z-index: 14;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(25px, 6vw, 55px);
+    color: #ffe978;
+    text-shadow: 0 0 25px rgba(255,210,50,.5);
+    opacity: 0;
+    pointer-events: none;
+    white-space: nowrap;
+}
+
+.sun-message.show {
+    animation: sunflowerMessage 3s ease forwards;
+}
+
+@keyframes sunflowerMessage {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(.5);
+    }
+
+    25% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(1.15);
+    }
+}
+
+/* RESPONSIVE */
+
+@media(max-width:600px) {
+
+    .moon {
+        width: 55px;
+        height: 55px;
+        right: 10%;
+    }
+
+    .message {
+        max-width: 90%;
+    }
+
+    .flower .head {
+        font-size: 28px;
+    }
+
+    .flower .stem {
+        height: 70px;
+    }
+
+    .sun-message {
+        white-space: normal;
+        width: 90%;
+        text-align: center;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="scene" id="scene">
+
+    <!-- PANTALLA INICIAL -->
+
+    <div class="start-screen" id="startScreen">
+
+        <div class="start-flower">🌼</div>
+
+        <div class="start-title">
+            Tengo algo para vos...
+        </div>
+
+        <div class="start-subtitle">
+            21 · 09 · 2026
+        </div>
+
+        <button class="open-btn" onclick="openSurprise()">
+            🌼 Abrir
+        </button>
+
+    </div>
+
+
+    <!-- LUNA -->
+
+    <div class="moon"></div>
+
+
+    <!-- ESTRELLAS -->
+
+    <div class="star" style="left:12%;top:15%;animation-delay:.2s"></div>
+    <div class="star" style="left:23%;top:30%;animation-delay:1s"></div>
+    <div class="star" style="left:35%;top:12%;animation-delay:.5s"></div>
+    <div class="star" style="left:50%;top:20%;animation-delay:1.5s"></div>
+    <div class="star" style="left:65%;top:11%;animation-delay:.8s"></div>
+    <div class="star" style="left:78%;top:28%;animation-delay:1.2s"></div>
+    <div class="star" style="left:88%;top:16%;animation-delay:.3s"></div>
+
+
+    <!-- CONTENIDO -->
+
+    <div class="content">
+
+        <div class="date">
+            21 · SEPTIEMBRE · 2026
+        </div>
+
+        <div class="title">
+            Chulis
+        </div>
+
+        <div class="subtitle">
+            te debía unas flores amarillas 🌼
+        </div>
+
+        <div class="message">
+            Chulis, te quiero hasta en la parte más primitiva de mí,
+            donde el corazón no razona y el cuerpo simplemente
+            reconoce aquello que le hace bien.
+        </div>
+
+        <div class="signature">
+            Con mucho amor. 💛
+        </div>
+
+    </div>
+
+
+    <!-- FLORES DEL CAMPO -->
+
+    <div class="flower" style="left:4%;transform:scale(.8);animation-delay:.3s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:12%;transform:scale(1.1);animation-delay:1s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:21%;transform:scale(.7);animation-delay:.5s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:31%;transform:scale(1);animation-delay:1.4s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:43%;transform:scale(.75);animation-delay:.8s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:55%;transform:scale(1.15);animation-delay:.2s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:67%;transform:scale(.8);animation-delay:1.1s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:78%;transform:scale(1);animation-delay:.6s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+    <div class="flower" style="left:89%;transform:scale(.75);animation-delay:1.3s">
+        <div class="head">🌼</div>
+        <div class="stem"></div>
+    </div>
+
+
+    <div class="ground"></div>
+
+
+    <!-- MENSAJE DEL BOTÓN -->
+
+    <div class="sun-message" id="sunMessage">
+        Para vos, Chulis 🌻💛
+    </div>
+
+
+    <!-- CONTROLES -->
+
+    <div class="controls">
+
+        <button
+            class="control-btn"
+            onclick="sunflowerExplosion()"
+            title="Girasoles">
+            🌻
+        </button>
+
+        <button
+            class="control-btn"
+            onclick="toggleSound()"
+            id="soundBtn"
+            title="Sonido">
+            🔊
+        </button>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================
+   ABRIR SORPRESA
+========================= */
+
+function openSurprise() {
+
+    document
+        .getElementById("startScreen")
+        .classList.add("hide");
+
+    createPetals();
+
+    startAmbientSound();
+}
+
+
+/* =========================
+   PÉTALOS
+========================= */
+
+function createPetal() {
+
+    const petal = document.createElement("div");
+
+    petal.className = "petal";
+
+    const symbols = ["🌼", "✨", "🌸"];
+
+    petal.innerHTML =
+        symbols[Math.floor(Math.random() * symbols.length)];
+
+    petal.style.left =
+        Math.random() * 100 + "vw";
+
+    petal.style.fontSize =
+        (10 + Math.random() * 15) + "px";
+
+    petal.style.animationDuration =
+        (5 + Math.random() * 7) + "s";
+
+    petal.style.setProperty(
+        "--wind",
+        (Math.random() * 200 - 100) + "px"
+    );
+
+    document
+        .getElementById("scene")
+        .appendChild(petal);
+
+    setTimeout(() => {
+        petal.remove();
+    }, 13000);
+}
+
+
+function createPetals() {
+
+    for(let i = 0; i < 25; i++) {
+
+        setTimeout(() => {
+            createPetal();
+        }, i * 250);
+
+    }
+
+    setInterval(createPetal, 700);
+}
+
+
+/* =========================
+   GIRASOLES 🌻
+========================= */
+
+function sunflowerExplosion() {
+
+    const scene =
+        document.getElementById("scene");
+
+    const message =
+        document.getElementById("sunMessage");
+
+    /* Mostrar mensaje */
+
+    message.classList.remove("show");
+
+    void message.offsetWidth;
+
+    message.classList.add("show");
+
+
+    /* Crear girasoles */
+
+    for(let i = 0; i < 28; i++) {
+
+        setTimeout(() => {
+
+            const sunflower =
+                document.createElement("div");
+
+            sunflower.className = "sunflower";
+
+            sunflower.innerHTML = "🌻";
+
+            sunflower.style.left =
+                (Math.random() * 100) + "vw";
+
+            sunflower.style.fontSize =
+                (25 + Math.random() * 35) + "px";
+
+            sunflower.style.animationDuration =
+                (3.5 + Math.random() * 2) + "s";
+
+            sunflower.style.setProperty(
+                "--move",
+                (Math.random() * 250 - 125) + "px"
+            );
+
+            scene.appendChild(sunflower);
+
+            setTimeout(() => {
+                sunflower.remove();
+            }, 6500);
+
+        }, i * 80);
+
+    }
+
+}
+
+
+/* =========================
+   SONIDO AMBIENTAL
+========================= */
+
+let audioContext;
+let oscillator;
+let gainNode;
+let soundOn = false;
+
+function startAmbientSound() {
+
+    if(soundOn) return;
+
+    try {
+
+        audioContext =
+            new (window.AudioContext ||
+            window.webkitAudioContext)();
+
+        oscillator =
+            audioContext.createOscillator();
+
+        gainNode =
+            audioContext.createGain();
+
+        oscillator.type = "sine";
+
+        oscillator.frequency.value = 220;
+
+        gainNode.gain.value = 0.025;
+
+        oscillator.connect(gainNode);
+
+        gainNode.connect(
+            audioContext.destination
+        );
+
+        oscillator.start();
+
+        soundOn = true;
+
+        document.getElementById("soundBtn").innerHTML = "🔊";
+
+    } catch(e) {
+
+        console.log("Audio no disponible");
+
+    }
+
+}
+
+
+/* =========================
+   CONTROL DE SONIDO
+========================= */
+
+function toggleSound() {
+
+    if(!audioContext) {
+
+        startAmbientSound();
+
+        return;
+    }
+
+    if(soundOn) {
+
+        gainNode.gain.value = 0;
+
+        soundOn = false;
+
+        document.getElementById("soundBtn").innerHTML = "🔇";
+
+    } else {
+
+        gainNode.gain.value = 0.025;
+
+        soundOn = true;
+
+        document.getElementById("soundBtn").innerHTML = "🔊";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
